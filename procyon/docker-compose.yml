@@ -43,6 +43,9 @@ services:
             - REDIS_HOST_PASSWORD=${REDIS_HOST_PASSWORD}
             - PHP_MEMORY_LIMIT=2G
             - PHP_UPLOAD_LIMIT=100G
+        depends_on:
+            - mysql
+            - redis
         networks:
             - frontend
             - backend
@@ -55,6 +58,8 @@ services:
             - 80:80
         volumes:
             - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+        depends_on:
+            - nc
         networks:
             - frontend
 
@@ -65,6 +70,4 @@ volumes:
 
 networks:
     frontend:
-        driver: bridge
     backend:
-        driver: bridge
