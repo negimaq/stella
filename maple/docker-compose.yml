@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+    ark:
+        image: turzam/ark:latest
+        container_name: ark
+        restart: always
+        ports:
+            - 7777:7777
+            - 7777:7777/udp
+            - 7778:7778
+            - 7778:7778/udp
+            - 27015:27015
+            - 27015:27015/udp
+        volumes:
+            - "./ark:/ark"
+        environment:
+            - SESSIONNAME=${SESSIONNAME}
+            - SERVERMAP=${SERVERMAP}
+            - SERVERPASSWORD=${SERVERPASSWORD}
+            - ADMINPASSWORD=${ADMINPASSWORD}
+            - NBPLAYERS=64
+            - SERVERPORT=27015
+            - STEAMPORT=7778
+            - BACKUPONSTART=0
+            - UPDATEONSTART=1
+            - BACKUPONSTOP=1
+            - WARNONSTOP=0
+            - TZ=Asia/Tokyo
+            - UID=1000
+            - GID=1000
