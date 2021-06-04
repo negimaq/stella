@@ -19,6 +19,7 @@ services:
             - SERVERMAP=${SERVERMAP}
             - SERVERPASSWORD=${SERVERPASSWORD}
             - ADMINPASSWORD=${ADMINPASSWORD}
+            - GIT_TAG=${GIT_TAG}
             - NBPLAYERS=64
             - SERVERPORT=27015
             - STEAMPORT=7778
