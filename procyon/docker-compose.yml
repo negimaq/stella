@@ -35,7 +35,7 @@ services:
             - backend
 
     nc:
-        image: nextcloud:21-fpm
+        image: nextcloud:23-fpm
         container_name: nc
         restart: always
         volumes:
