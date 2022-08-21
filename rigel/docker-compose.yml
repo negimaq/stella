@@ -1,32 +1,59 @@
 version: '3'
 
 services:
-    ark:
-        image: turzam/ark:latest
-        container_name: ark
-        restart: always
-        ports:
-            - 7777:7777
-            - 7777:7777/udp
-            - 7778:7778
-            - 7778:7778/udp
-            - 27015:27015
-            - 27015:27015/udp
-        volumes:
-            - "./ark:/ark"
-        environment:
-            - SESSIONNAME=${SESSIONNAME}
-            - SERVERMAP=${SERVERMAP}
-            - SERVERPASSWORD=${SERVERPASSWORD}
-            - ADMINPASSWORD=${ADMINPASSWORD}
-            - GIT_TAG=${GIT_TAG}
-            - NBPLAYERS=64
-            - SERVERPORT=27015
-            - STEAMPORT=7778
-            - BACKUPONSTART=0
-            - UPDATEONSTART=1
-            - BACKUPONSTOP=1
-            - WARNONSTOP=0
-            - TZ=Asia/Tokyo
-            - UID=1000
-            - GID=1000
+  tusbv13alpha:
+    image: itzg/minecraft-server:latest
+    container_name: tusb
+    restart: always
+    ports:
+      - 25565:25565
+    environment:
+      - EULA="TRUE"
+      - VERSION=1.17.1
+      - OVERRIDE_SERVER_PROPERTIES=true
+      - ENFORCE_WHITELIST=TRUE
+      - RESOURCE_PACK="https://cloud.skyblock.jp/s/ed2sgj9dkigZJx6/download"
+      - RESOURCE_PACK_SHA1="444bbc39b310e2c45c70f982aee4ec6e4a3da5f8"
+      - RESOURCE_PACK_ENFORCE=true
+      - ENABLE_COMMAND_BLOCK=true
+    volumes:
+      - ./minecraft:/data
+
+x-disabled:
+  mc-router:
+    image: itzg/mc-router:latest
+    container_name: mc-router
+    restart: always
+    ports:
+      - 25565:25565
+    command: --mapping=${MC_EXTERNAL_DOMAIN}=tusbv13alpha:25565
+
+  ark:
+    image: turzam/ark:latest
+    container_name: ark
+    restart: always
+    ports:
+      - 7777:7777
+      - 7777:7777/udp
+      - 7778:7778
+      - 7778:7778/udp
+      - 27015:27015
+      - 27015:27015/udp
+    volumes:
+      - "./ark:/ark"
+    environment:
+      - SESSIONNAME=${SESSIONNAME}
+      - SERVERMAP=${SERVERMAP}
+      - SERVERPASSWORD=${SERVERPASSWORD}
+      - ADMINPASSWORD=${ADMINPASSWORD}
+      - GIT_TAG=${GIT_TAG}
+      - NBPLAYERS=64
+      - SERVERPORT=27015
+      - STEAMPORT=7778
+      - BACKUPONSTART=0
+      - UPDATEONSTART=1
+      - BACKUPONSTOP=1
+      - WARNONSTOP=0
+      - TZ=Asia/Tokyo
+      - UID=1000
+      - GID=1000
