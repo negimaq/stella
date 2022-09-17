@@ -1,23 +1,6 @@
 version: '3'
 
 services:
-  tusbv13alpha:
-    image: itzg/minecraft-server:latest
-    container_name: tusb
-    restart: always
-    ports:
-      - 25565:25565
-    environment:
-      - EULA="TRUE"
-      - VERSION=1.17.1
-      - OVERRIDE_SERVER_PROPERTIES=true
-      - ENFORCE_WHITELIST=TRUE
-      - RESOURCE_PACK="https://cloud.skyblock.jp/s/ed2sgj9dkigZJx6/download"
-      - RESOURCE_PACK_SHA1="444bbc39b310e2c45c70f982aee4ec6e4a3da5f8"
-      - RESOURCE_PACK_ENFORCE=true
-      - ENABLE_COMMAND_BLOCK=true
-    volumes:
-      - ./minecraft:/data
 
 x-disabled:
   mc-router:
@@ -27,6 +10,31 @@ x-disabled:
     ports:
       - 25565:25565
     command: --mapping=${MC_EXTERNAL_DOMAIN}=tusbv13alpha:25565
+
+  tusbv13alpha:
+    image: itzg/minecraft-server:latest
+    container_name: tusb
+    restart: always
+    ports:
+      - 25565:25565
+    environment:
+      EULA: "TRUE"
+      VERSION: "1.17.1"
+      MEMORY: "6G"
+      MOTD: "TheUnusualSkyBlock v13.1.1 alpha"
+      OVERRIDE_SERVER_PROPERTIES: true
+      RESOURCE_PACK: "https://www.dropbox.com/s/9ombtpecc6kxgqj/TheUnusualResourcePack_13.1.1-alpha.zip?dl=1"
+      RESOURCE_PACK_SHA1: "a32d0d073781a7da6f32a3f12df015d14cd925d6"
+      RESOURCE_PACK_ENFORCE: true
+      ENABLE_WHITELIST: true
+      ENFORCE_WHITELIST: true
+      ENABLE_COMMAND_BLOCK: true
+      ALLOW_FLIGHT: true
+      SPAWN_PROTECTION: 0
+    volumes:
+      - ./minecraft:/data
+    tty: true
+    stdin_open: true
 
   ark:
     image: turzam/ark:latest
@@ -57,3 +65,25 @@ x-disabled:
       - TZ=Asia/Tokyo
       - UID=1000
       - GID=1000
+
+  7dtd:
+    image: vinanrra/7dtd-server
+    container_name: 7dtd
+    restart: always
+    ports:
+      - 26900:26900/tcp
+      - 26900:26900/udp
+      - 26901:26901/udp
+      - 26902:26902/udp
+    environment:
+      - START_MODE=1
+      - VERSION=stable
+      - PUID=1000
+      - PGID=1000
+      - TimeZone=Asia/Tokyo
+    volumes:
+      - ./7dtd/7DaysToDie:/home/sdtdserver/.local/share/7DaysToDie/
+      - ./7dtd/LGSM-Config:/home/sdtdserver/lgsm/config-lgsm/sdtdserver
+      - ./7dtd/ServerFiles:/home/sdtdserver/serverfiles/
+      - ./7dtd/log:/home/sdtdserver/log/
+      - ./7dtd/backups:/home/sdtdserver/lgsm/backup/
