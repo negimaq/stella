@@ -6,10 +6,10 @@ services:
     container_name: certbot
     restart: always
     command: ""
-    entrypoint: sh -c "trap exit TERM; while :; do /certbot.sh; sleep 24h & wait $${!}; done;"
+    entrypoint: sh -c "trap exit TERM; while :; do /certbot; sleep 24h & wait $${!}; done;"
     volumes:
       - "letsencrypt:/etc/letsencrypt"
-      - "./certbot.sh:/certbot.sh:ro"
+      - "./certbot.py:/certbot:ro"
     environment:
       - TERM="xterm"
       - EMAIL=${EMAIL}

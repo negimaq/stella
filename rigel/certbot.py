@@ -2,6 +2,7 @@
 
 import os
 import re
+import time
 import base64
 import subprocess
 
@@ -21,7 +22,7 @@ os.chmod(GOOGLE_CREDENTIALS_JSON_PATH, 0o0600)
 
 domains_dict = {}
 for d in domains_list:
-    m = re.match(r"([a-z0-9-_]+\.[a-z0-9-_]+)\.?$", d)
+    m = re.search(r"([a-z0-9-_]+\.[a-z0-9-_]+)\.?$", d)
     sld = m.group(1)
 
     if sld not in domains_dict:
@@ -35,14 +36,17 @@ for sld, l in domains_dict.items():
             "certbot",
             "certonly",
             "--agree-tos",
+            "--keep-until-expiring",
             "--dns-google",
             "--dns-google-credentials",
             GOOGLE_CREDENTIALS_JSON_PATH,
             "--dns-google-propagation-seconds",
-            GOOGLE_PROPAGATION_SECONDS,
+            str(GOOGLE_PROPAGATION_SECONDS),
             "--domains",
             ",".join(l),
             "--email",
             email,
         ]
     )
+
+    time.sleep(60)
