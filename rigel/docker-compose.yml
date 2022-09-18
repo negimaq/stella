@@ -1,6 +1,29 @@
 version: '3'
 
 services:
+  certbot:
+    image: certbot/dns-google:latest
+    container_name: certbot
+    restart: always
+    command: ""
+    entrypoint: sh -c "trap exit TERM; while :; do /certbot.sh; sleep 24h & wait $${!}; done;"
+    volumes:
+      - "letsencrypt:/etc/letsencrypt"
+      - "./certbot.sh:/certbot.sh:ro"
+    environment:
+      - TERM="xterm"
+      - EMAIL=${EMAIL}
+      - WEB_DOMAINS=${WEB_DOMAINS}
+      - GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}
+    networks:
+      - backend
+
+volumes:
+  letsencrypt:
+
+networks:
+  frontend:
+  backend:
 
 x-disabled:
   mc-router:
