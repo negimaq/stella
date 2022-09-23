@@ -12,10 +12,11 @@ services:
     ports:
       - "443:443"
     environment:
+      - GENERAL_BASE_DOMAIN=${GENERAL_BASE_DOMAIN}
+      - NAS_DOMAIN=${NAS_DOMAIN}
       - NEXTCLOUD_DOMAIN=${NEXTCLOUD_DOMAIN}
-      - NEXTCLOUD_BASE_DOMAIN=${NEXTCLOUD_BASE_DOMAIN}
-      - NEXTCLOUD_ALLOW_CIDR=${NEXTCLOUD_ALLOW_CIDR}
       - PROCYON_DOMAIN=${PROCYON_DOMAIN}
+      - HADAR_DOMAIN=${HADAR_DOMAIN}
     networks:
       - frontend
 
