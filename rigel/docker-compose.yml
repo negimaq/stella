@@ -5,6 +5,7 @@ services:
     image: nginx:latest
     container_name: nginx
     restart: always
+    #command: /bin/sh -c "while :; do sleep 1d & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\""
     volumes:
       - "letsencrypt:/etc/letsencrypt:ro"
       - "./nginx-templates:/etc/nginx/templates:ro"
@@ -13,14 +14,16 @@ services:
     environment:
       - NEXTCLOUD_DOMAIN=${NEXTCLOUD_DOMAIN}
       - NEXTCLOUD_BASE_DOMAIN=${NEXTCLOUD_BASE_DOMAIN}
+      - NEXTCLOUD_ALLOW_CIDR=${NEXTCLOUD_ALLOW_CIDR}
       - PROCYON_DOMAIN=${PROCYON_DOMAIN}
+    networks:
+      - frontend
 
   certbot:
     image: certbot/dns-google:latest
     container_name: certbot
     restart: always
-    command: ""
-    entrypoint: sh -c "trap exit TERM; while :; do /certbot; sleep 24h & wait $${!}; done;"
+    entrypoint: /bin/sh -c "trap exit TERM; while :; do /certbot; sleep 3d & wait $${!}; done;"
     volumes:
       - "letsencrypt:/etc/letsencrypt"
       - "./certbot.py:/certbot:ro"
