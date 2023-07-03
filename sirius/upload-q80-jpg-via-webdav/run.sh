@@ -45,7 +45,7 @@ if [ -z $WEBDAV_PASSWORD ]; then
 	read -p "webdav password: " WEBDAV_PASSWORD
 fi
 
-tree -d -L 2 --noreport /original
+tree -NC -d -L 2 --noreport /original
 if [ $? -ne 0 ]; then
 	echo "directory not found: /original"
 	exit 1
